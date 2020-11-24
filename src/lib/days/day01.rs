@@ -20,3 +20,10 @@ impl Day for Day01 {
         Ok(())
     }
 }
+
+#[cfg(test)]
+mod tests {
+    #[test]
+    fn example() {
+    }
+}
