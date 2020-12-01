@@ -16,17 +16,17 @@ pub trait Day {
 
         println!("Day {:02}:", self.number());
         if input.len() > 50 {
-            println!("Input: \"{}...\"", &input[0..50]);
+            println!("\nInput: \"{}...\"", &input[0..50]);
         } else {
-            println!("Input: \"{}\"", &input);
+            println!("\nInput: \"{}\"", &input);
         }
 
-        println!("Setup:");
+        println!("\nSetup:");
         self.setup(input)?;
 
-        println!("Part 1:");
+        println!("\nPart 1:");
         self.part1()?;
-        println!("Part 2:");
+        println!("\nPart 2:");
         self.part2()?;
 
         Ok(())

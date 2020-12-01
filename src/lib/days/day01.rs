@@ -1,5 +1,6 @@
 use crate::lib::advent::Result;
 use crate::Day;
+use crate::lib::utils::parse_lines;
 
 #[derive(Default)]
 pub struct Day01 {
@@ -12,7 +13,7 @@ impl Day for Day01 {
     }
 
     fn setup(&mut self, input: String) -> Result {
-        self.nums = input.lines().map(|s| s.parse().unwrap()).collect();
+        self.nums = parse_lines(&input);
         Ok(())
     }
 
