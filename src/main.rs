@@ -15,7 +15,7 @@ struct Opt {
 fn main() -> Result<(), Box<dyn Error>> {
     let opt = Opt::from_args();
 
-    if let Some(day) = get_day(opt.day) {
+    if let Some(mut day) = get_day(opt.day) {
         day.run()?;
 
         Ok(())

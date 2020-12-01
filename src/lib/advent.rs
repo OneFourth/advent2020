@@ -4,11 +4,11 @@ pub type Result = std::result::Result<(), Box<dyn Error>>;
 
 pub trait Day {
     fn number(&self) -> u8;
-    fn setup(&self, input: String) -> Result;
+    fn setup(&mut self, input: String) -> Result;
     fn part1(&self) -> Result;
     fn part2(&self) -> Result;
 
-    fn run(&self) -> Result {
+    fn run(&mut self) -> Result {
         let path = Path::new(".")
             .join("input")
             .join(format!("{:02}", self.number()));
@@ -21,9 +21,12 @@ pub trait Day {
             println!("Input: \"{}\"", &input);
         }
 
+        println!("Setup:");
         self.setup(input)?;
 
+        println!("Part 1:");
         self.part1()?;
+        println!("Part 2:");
         self.part2()?;
 
         Ok(())
