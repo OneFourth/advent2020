@@ -1,14 +1,14 @@
 use std::{error::Error, path::Path};
 
-pub type Result = std::result::Result<(), Box<dyn Error>>;
+pub type Result<T> = std::result::Result<T, Box<dyn Error>>;
 
 pub trait Day {
     fn number(&self) -> u8;
-    fn setup(&mut self, input: String) -> Result;
-    fn part1(&self) -> Result;
-    fn part2(&self) -> Result;
+    fn setup(&mut self, input: &str) -> Result<()>;
+    fn part1(&self) -> Result<String>;
+    fn part2(&self) -> Result<String>;
 
-    fn run(&mut self) -> Result {
+    fn run(&mut self) -> Result<()> {
         let path = Path::new(".")
             .join("input")
             .join(format!("{:02}", self.number()));
@@ -22,12 +22,12 @@ pub trait Day {
         }
 
         println!("\nSetup:");
-        self.setup(input)?;
+        self.setup(&input)?;
 
         println!("\nPart 1:");
-        self.part1()?;
+        println!("{}", self.part1()?);
         println!("\nPart 2:");
-        self.part2()?;
+        println!("{}", self.part2()?);
 
         Ok(())
     }
