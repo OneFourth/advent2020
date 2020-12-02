@@ -1,6 +1,6 @@
 use crate::lib::advent::Result;
-use crate::Day;
 use crate::lib::utils::parse_lines;
+use crate::Day;
 
 #[derive(Default)]
 pub struct Day01 {

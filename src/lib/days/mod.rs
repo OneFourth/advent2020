@@ -29,8 +29,8 @@ pub mod day25;
 pub fn get_day(day: u8) -> Option<Box<dyn Day>> {
     match day {
         1 => Some(Box::new(day01::Day01::default())),
-        /*
         2 => Some(Box::new(day02::Day02::default())),
+        /*
         3 => Some(Box::new(day03::Day03::default())),
         4 => Some(Box::new(day04::Day04::default())),
         5 => Some(Box::new(day05::Day05::default())),
