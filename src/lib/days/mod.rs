@@ -33,7 +33,6 @@ pub fn run_day(day: u8, input: &str) -> Result<()> {
         2 => Ok(Box::new(day02::Day02::default())),
         3 => Ok(Box::new(day03::Day03::default())),
         4 => Ok(Box::new(day04::Day04::default())),
-        /*
         5 => Ok(Box::new(day05::Day05::default())),
         6 => Ok(Box::new(day06::Day06::default())),
         7 => Ok(Box::new(day07::Day07::default())),
@@ -55,7 +54,6 @@ pub fn run_day(day: u8, input: &str) -> Result<()> {
         23 => Ok(Box::new(day23::Day23::default())),
         24 => Ok(Box::new(day24::Day24::default())),
         25 => Ok(Box::new(day25::Day25::default())),
-        */
         _ => Err("Invalid Day".into()),
     };
 
