@@ -31,8 +31,8 @@ pub fn get_day(day: u8) -> Option<Box<dyn Day>> {
         1 => Some(Box::new(day01::Day01::default())),
         2 => Some(Box::new(day02::Day02::default())),
         3 => Some(Box::new(day03::Day03::default())),
-        /*
         4 => Some(Box::new(day04::Day04::default())),
+        /*
         5 => Some(Box::new(day05::Day05::default())),
         6 => Some(Box::new(day06::Day06::default())),
         7 => Some(Box::new(day07::Day07::default())),
