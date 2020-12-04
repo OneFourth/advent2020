@@ -44,11 +44,7 @@ impl Map {
     }
 }
 
-impl Day for Day03 {
-    fn number(&self) -> u8 {
-        3
-    }
-
+impl<'a> Day<'a> for Day03 {
     fn setup(&mut self, input: &str) -> Result<()> {
         self.map = Map::new(input);
         Ok(())

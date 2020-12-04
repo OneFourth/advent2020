@@ -7,11 +7,7 @@ pub struct Day01 {
     nums: Vec<usize>,
 }
 
-impl Day for Day01 {
-    fn number(&self) -> u8 {
-        1
-    }
-
+impl<'a> Day<'a> for Day01 {
     fn setup(&mut self, input: &str) -> Result<()> {
         self.nums = parse_lines(&input)?;
         Ok(())

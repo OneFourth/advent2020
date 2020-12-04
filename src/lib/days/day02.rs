@@ -49,11 +49,7 @@ pub struct Day02 {
     rules: Vec<Rule>,
 }
 
-impl Day for Day02 {
-    fn number(&self) -> u8 {
-        2
-    }
-
+impl<'a> Day<'a> for Day02 {
     fn setup(&mut self, input: &str) -> Result<()> {
         let r = Regex::new(r"^(\d+)-(\d+) (\w): (\w+)$")?;
         for line in input.lines() {
