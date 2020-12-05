@@ -1,3 +1,5 @@
+use std::convert::TryInto;
+
 use crate::lib::advent::Result;
 use crate::Day;
 
@@ -12,23 +14,19 @@ pub struct Day05<'a> {
 }
 
 impl<'a> Seat<'a> {
-    fn new(s: &'a str) -> Self {
-        let (row_ins, col_ins) = s.as_bytes().split_at(7);
+    fn new(s: &'a [u8; 10]) -> Self {
+        let (row_ins, col_ins) = s.split_at(7);
 
         Self { row_ins, col_ins }
     }
 
     fn get_value(ins: &[u8], one: u8) -> usize {
         const BASE: usize = 2;
-        let mut v = 0;
-        for (n, &r) in ins.iter().enumerate() {
-            let n = BASE.pow((ins.len() - n - 1) as u32);
-            if one == r {
-                v += n;
-            }
-        }
-
-        v
+        ins.iter()
+            .rev()
+            .enumerate()
+            .map(|(n, &r)| BASE.pow(n as u32) * (r == one) as usize)
+            .sum()
     }
 
     fn get_seat_id(&self) -> usize {
@@ -42,8 +40,11 @@ impl<'a> Day<'a> for Day05<'a> {
     fn setup(&mut self, input: &'a str) -> Result<()> {
         self.seats = input
             .lines()
-            .map(|instructions| Seat::new(instructions))
-            .collect();
+            .map(|instructions| {
+                let b = instructions.as_bytes().try_into()?;
+                Ok(Seat::new(b))
+            })
+            .collect::<Result<Vec<_>>>()?;
         Ok(())
     }
 
