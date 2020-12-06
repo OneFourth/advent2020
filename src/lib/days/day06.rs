@@ -23,10 +23,9 @@ impl Group {
 
     fn questions_all_answered(&self) -> usize {
         let (p, start) = self.people.split_first().unwrap();
-        let p = p.clone();
         start
             .iter()
-            .fold(p, |acc, q| acc.intersection(q).cloned().collect())
+            .fold(p.clone(), |acc, q| acc.intersection(q).cloned().collect())
             .len()
     }
 }
@@ -43,12 +42,12 @@ impl<'a> Day<'a> for Day06 {
     }
 
     fn part1(&self) -> Result<String> {
-        let count: usize = self.groups.iter().map(|g| g.questions_answered()).sum();
+        let count: usize = self.groups.iter().map(Group::questions_answered).sum();
         Ok(count.to_string())
     }
 
     fn part2(&self) -> Result<String> {
-        let count: usize = self.groups.iter().map(|g| g.questions_all_answered()).sum();
+        let count: usize = self.groups.iter().map(Group::questions_all_answered).sum();
         Ok(count.to_string())
     }
 }
