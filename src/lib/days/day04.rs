@@ -104,7 +104,7 @@ pub struct Day04<'a> {
 
 impl<'a> Day<'a> for Day04<'a> {
     fn setup(&mut self, input: &'a str) -> Result<()> {
-        for entry in input.split("\r\n\r\n") {
+        for entry in input.split("\n\n") {
             let mut p = Passport::default();
 
             for field in entry.split_whitespace() {

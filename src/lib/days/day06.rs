@@ -38,7 +38,7 @@ pub struct Day06 {
 
 impl<'a> Day<'a> for Day06 {
     fn setup(&mut self, input: &'a str) -> Result<()> {
-        self.groups = input.split("\r\n\r\n").map(Group::new).collect();
+        self.groups = input.split("\n\n").map(Group::new).collect();
         Ok(())
     }
 
