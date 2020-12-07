@@ -11,38 +11,38 @@ struct BagRules<'a> {
 }
 
 impl<'a> BagRules<'a> {
-    fn new(input: &'a str) -> Self {
+    fn new(input: &'a str) -> Result<Self> {
         let r = Regex::new(r"(?:(\d+) )?(\w+ \w+) bags?").unwrap();
-        let rules = input
-            .lines()
-            .map(|l| {
-                let mut key = "";
-                let mut values = Vec::new();
-                for caps in r.captures_iter(l) {
-                    if let Some(d) = caps.get(1) {
-                        values.push((d.as_str().parse().unwrap(), caps.get(2).unwrap().as_str()));
-                    } else {
-                        let name = caps.get(2).unwrap().as_str();
-                        match name {
-                            "no other" => {}
-                            _ => key = name,
-                        }
+        let mut rules = HashMap::new();
+
+        for line in input.lines() {
+            let mut key = "";
+            let mut values = Vec::new();
+            for caps in r.captures_iter(line) {
+                if let Some(d) = caps.get(1) {
+                    values.push((
+                        d.as_str().parse()?,
+                        caps.get(2).ok_or("Failed to parse")?.as_str(),
+                    ));
+                } else {
+                    let name = caps.get(2).ok_or("Failed to parse")?.as_str();
+                    match name {
+                        "no other" => {}
+                        _ => key = name,
                     }
                 }
-                (key, values)
-            })
-            .collect();
+            }
 
-        Self { rules }
+            rules.insert(key, values);
+        }
+
+        Ok(Self { rules })
     }
 
     fn can_hold(&self, bag: &str, target: &str) -> bool {
-        if let Some(v) = self.rules.get(bag) {
-            v.iter()
-                .any(|(_, b)| *b == target || self.can_hold(b, target))
-        } else {
-            false
-        }
+        let rule = &self.rules[bag];
+
+        rule.iter().any(|(_, b)| *b == target) || rule.iter().any(|(_, b)| self.can_hold(b, target))
     }
 
     fn count_rules(&self, held: &str) -> usize {
@@ -53,13 +53,10 @@ impl<'a> BagRules<'a> {
     }
 
     fn count_bags(&self, bag: &str) -> usize {
-        if let Some(v) = self.rules.get(bag) {
-            v.iter()
-                .map(|(count, other)| count + (count * self.count_bags(other)))
-                .sum()
-        } else {
-            0
-        }
+        self.rules[bag]
+            .iter()
+            .map(|(count, other)| count + (count * self.count_bags(other)))
+            .sum()
     }
 }
 
@@ -70,8 +67,7 @@ pub struct Day07<'a> {
 
 impl<'a> Day<'a> for Day07<'a> {
     fn setup(&mut self, input: &'a str) -> Result<()> {
-        self.bag_rules = BagRules::new(input);
-
+        self.bag_rules = BagRules::new(input)?;
         Ok(())
     }
 
