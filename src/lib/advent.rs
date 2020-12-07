@@ -14,13 +14,45 @@ pub trait Day<'a> {
             println!("\nInput: \"{}\"", &input);
         }
 
-        println!("\nSetup:");
-        self.setup(&input)?;
+        let mut total = 0;
 
-        println!("\nPart 1:");
-        println!("{}", self.part1()?);
-        println!("\nPart 2:");
-        println!("{}", self.part2()?);
+        {
+            let before = std::time::Instant::now();
+
+            println!("\nSetup:");
+            self.setup(&input)?;
+
+            let after = std::time::Instant::now();
+            let duration = (after - before).as_millis();
+            total += duration;
+            println!("\nTook: {}ms", duration);
+        }
+
+        {
+            let before = std::time::Instant::now();
+
+            println!("\nPart 1:");
+            println!("{}", self.part1()?);
+
+            let after = std::time::Instant::now();
+            let duration = (after - before).as_millis();
+            total += duration;
+            println!("\nTook: {}ms", duration);
+        }
+
+        {
+            let before = std::time::Instant::now();
+
+            println!("\nPart 2:");
+            println!("{}", self.part2()?);
+
+            let after = std::time::Instant::now();
+            let duration = (after - before).as_millis();
+            total += duration;
+            println!("\nTook: {}ms", duration);
+        }
+
+        println!("\nTotal time: {}ms", total);
 
         Ok(())
     }
