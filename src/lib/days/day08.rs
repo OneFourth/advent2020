@@ -14,14 +14,17 @@ impl FromStr for Operation {
     type Err = &'static str;
 
     fn from_str(s: &str) -> std::result::Result<Self, Self::Err> {
-        let split = s.split_whitespace().collect::<Vec<_>>();
-        match split.as_slice() {
-            [ins, v] => match *ins {
-                "acc" => Ok(Operation::Acc(v.parse().unwrap())),
-                "nop" => Ok(Operation::Nop(v.parse().unwrap())),
-                "jmp" => Ok(Operation::Jmp(v.parse().unwrap())),
-                _ => Err("Failed to parse instruction"),
-            },
+        let mut split = s.split_whitespace();
+        match (split.next(), split.next()) {
+            (Some(ins), Some(v)) => {
+                let v = v.parse().map_err(|_| "Failed to parse number")?;
+                match ins {
+                    "acc" => Ok(Operation::Acc(v)),
+                    "nop" => Ok(Operation::Nop(v)),
+                    "jmp" => Ok(Operation::Jmp(v)),
+                    _ => Err("Failed to parse instruction"),
+                }
+            }
             _ => Err("Invalid instruction"),
         }
     }
@@ -38,7 +41,7 @@ impl Program {
     fn new(s: &str) -> Result<Self> {
         let instructions = s
             .lines()
-            .map(|s| s.parse().map_err(|e: &'static str| e.into()))
+            .map(|s| s.parse().map_err(Into::into))
             .collect::<Result<Vec<_>>>()?;
 
         Ok(Self {
@@ -104,14 +107,14 @@ impl<'a> Day<'a> for Day08 {
                 .iter_mut()
                 .enumerate()
                 .skip(tried_up_to)
-                .filter(|(_, i)| matches!(i, Operation::Jmp(_) | Operation::Nop(_)))
-                .next().unwrap();
+                .find(|(_, i)| matches!(i, Operation::Jmp(_) | Operation::Nop(_)))
+                .unwrap();
 
-            tried_up_to = n+1;
+            tried_up_to = n + 1;
 
             match ins {
-                Operation::Nop(v) => {*ins = Operation::Jmp(*v)},
-                Operation::Jmp(v) => {*ins = Operation::Nop(*v)},
+                Operation::Nop(v) => *ins = Operation::Jmp(*v),
+                Operation::Jmp(v) => *ins = Operation::Nop(*v),
                 _ => {}
             }
 

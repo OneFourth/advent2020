@@ -14,13 +14,13 @@ impl<'a> Day<'a> for Day09 {
     }
 
     fn part1(&self) -> Result<String> {
-        let v = self
+        let (_, v) = self
             .numbers
             .windows(25)
             .zip(self.numbers.iter().skip(25))
-            .find(|(w, n)| !w.iter().any(|a| w.contains(&(*n - *a))))
+            .find(|(w, &n)| !w.iter().any(|&a| w.contains(&(n - a))))
             .ok_or("Could not find number")?;
-        Ok(v.1.to_string())
+        Ok(v.to_string())
     }
 
     fn part2(&self) -> Result<String> {
@@ -28,7 +28,11 @@ impl<'a> Day<'a> for Day09 {
         let mut n = 2;
         let mut result = 0;
         while n < self.numbers.len() {
-            if let Some(r) = self.numbers.windows(n).find(|ns| ns.iter().sum::<isize>() == target) {
+            if let Some(r) = self
+                .numbers
+                .windows(n)
+                .find(|ns| ns.iter().sum::<isize>() == target)
+            {
                 result = r.iter().min().unwrap() + r.iter().max().unwrap();
             }
 
